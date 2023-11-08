@@ -1,20 +1,18 @@
 package ru.serioussem.blubbourne;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Game;
+import ru.serioussem.blubbourne.screen.MainGameScreen;
 
-public class BludBourne extends ApplicationAdapter {
-    SpriteBatch batch;
-    Texture img;
+public class BludBourne extends Game {
+    public static final MainGameScreen _mainGameScreen = new MainGameScreen();
 
     @Override
     public void create() {
-        super.create();
+        setScreen(_mainGameScreen);
     }
 
     @Override
-    public void render() {
-        super.render();
+    public void dispose() {
+        _mainGameScreen.dispose();
     }
 }
