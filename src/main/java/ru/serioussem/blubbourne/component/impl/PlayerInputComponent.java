@@ -1,50 +1,66 @@
-package ru.serioussem.blubbourne;
-
-import java.util.HashMap;
-import java.util.Map;
+package ru.serioussem.blubbourne.component.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
+import ru.serioussem.blubbourne.Entity;
+import ru.serioussem.blubbourne.component.InputComponent;
 
-public class PlayerController implements InputProcessor {
-    private final static String TAG = PlayerController.class.getSimpleName();
+public class PlayerInputComponent extends InputComponent {
+    private final static String TAG = PlayerInputComponent.class.getSimpleName();
+    private Vector3 _lastMouseCoordinates;
 
-    enum Keys {
-        LEFT, RIGHT, UP, DOWN, QUIT
+    public PlayerInputComponent() {
+        this._lastMouseCoordinates = new Vector3();
+        Gdx.input.setInputProcessor(this);
     }
 
-    enum Mouse {
-        SELECT, DOACTION
+    @Override
+    public void receiveMessage(String message) {
+        String[] string = message.split(MESSAGE_TOKEN);
+        if (string.length == 0) return;
+        //Specifically for messages with 1 object payload
+        if (string.length == 2) {
+            if (string[0].equalsIgnoreCase(MESSAGE.CURRENT_DIRECTION.toString())) {
+                _currentDirection = _json.fromJson(Entity.Direction.class, string[1]);
+            }
+        }
     }
 
-    private static Map<Keys, Boolean> keys = new HashMap<PlayerController.Keys, Boolean>();
-    private static Map<Mouse, Boolean> mouseButtons = new HashMap<PlayerController.Mouse, Boolean>();
-    private Vector3 lastMouseCoordinates;
-    private Entity _player;
+    @Override
+    public void update(Entity entity, float delta) {
+        //Keyboard input
+        if (keys.get(Keys.LEFT)) {
+            entity.sendMessage(MESSAGE.CURRENT_STATE, _json.toJson(Entity.State.WALKING));
+            entity.sendMessage(MESSAGE.CURRENT_DIRECTION, _json.toJson(Entity.Direction.LEFT));
+        } else if (keys.get(Keys.RIGHT)) {
+            entity.sendMessage(MESSAGE.CURRENT_STATE, _json.toJson(Entity.State.WALKING));
+            entity.sendMessage(MESSAGE.CURRENT_DIRECTION, _json.toJson(Entity.Direction.RIGHT));
+        } else if (keys.get(Keys.UP)) {
+            entity.sendMessage(MESSAGE.CURRENT_STATE, _json.toJson(Entity.State.WALKING));
+            entity.sendMessage(MESSAGE.CURRENT_DIRECTION, _json.toJson(Entity.Direction.UP));
+        } else if (keys.get(Keys.DOWN)) {
+            entity.sendMessage(MESSAGE.CURRENT_STATE, _json.toJson(Entity.State.WALKING));
+            entity.sendMessage(MESSAGE.CURRENT_DIRECTION, _json.toJson(Entity.Direction.DOWN));
+        } else if (keys.get(Keys.QUIT)) {
+            Gdx.app.exit();
+        } else {
+            entity.sendMessage(MESSAGE.CURRENT_STATE, _json.toJson(Entity.State.IDLE));
+            if (_currentDirection == null) {
+                entity.sendMessage(MESSAGE.CURRENT_DIRECTION, _json.toJson(Entity.Direction.DOWN));
+            }
+        }
 
-    //initialize the hashmap for inputs
-    static {
-        keys.put(Keys.LEFT, false);
-        keys.put(Keys.RIGHT, false);
-        keys.put(Keys.UP, false);
-        keys.put(Keys.DOWN, false);
-        keys.put(Keys.QUIT, false);
+        //Mouse input
+        if (mouseButtons.get(Mouse.SELECT)) {
+            entity.sendMessage(MESSAGE.INIT_SELECT_ENTITY, _json.toJson(_lastMouseCoordinates));
+            mouseButtons.put(Mouse.SELECT, false);
+        }
     }
 
-    ;
-
-    static {
-        mouseButtons.put(Mouse.SELECT, false);
-        mouseButtons.put(Mouse.DOACTION, false);
-    }
-
-    ;
-
-    public PlayerController(Entity player) {
-        this.lastMouseCoordinates = new Vector3();
-        this._player = player;
+    @Override
+    public void dispose() {
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
@@ -94,8 +110,7 @@ public class PlayerController implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (button == Input.Buttons.LEFT || button ==
-                Input.Buttons.RIGHT) {
+        if (button == Input.Buttons.LEFT || button == Input.Buttons.RIGHT) {
             this.setClickedMouseCoordinates(screenX, screenY);
         }
         //left is selection, right is context menu
@@ -127,40 +142,7 @@ public class PlayerController implements InputProcessor {
         mouseButtons.put(Mouse.DOACTION, false);
     }
 
-    public void update(float delta) {
-        processInput(delta);
-    }
-
-    private void processInput(float delta) {
-//Keyboard input
-        if (keys.get(Keys.LEFT)) {
-            _player.calculateNextPosition(Entity.Direction.LEFT, delta);
-            _player.setState(Entity.State.WALKING);
-            _player.setDirection(Entity.Direction.LEFT, delta);
-        } else if (keys.get(Keys.RIGHT)) {
-            _player.calculateNextPosition(Entity.Direction.RIGHT, delta);
-            _player.setState(Entity.State.WALKING);
-            _player.setDirection(Entity.Direction.RIGHT, delta);
-        } else if (keys.get(Keys.UP)) {
-            _player.calculateNextPosition(Entity.Direction.UP, delta);
-            _player.setState(Entity.State.WALKING);
-            _player.setDirection(Entity.Direction.UP, delta);
-        } else if (keys.get(Keys.DOWN)) {
-            _player.calculateNextPosition(Entity.Direction.DOWN, delta);
-            _player.setState(Entity.State.WALKING);
-            _player.setDirection(Entity.Direction.DOWN, delta);
-        } else if (keys.get(Keys.QUIT)) {
-            Gdx.app.exit();
-        } else {
-            _player.setState(Entity.State.IDLE);
-        }
-        //Mouse input
-        if (mouseButtons.get(Mouse.SELECT)) {
-            mouseButtons.put(Mouse.SELECT, false);
-        }
-    }
-
-    public static void hide() {
+    public static void clear() {
         keys.put(Keys.LEFT, false);
         keys.put(Keys.RIGHT, false);
         keys.put(Keys.UP, false);
@@ -182,11 +164,7 @@ public class PlayerController implements InputProcessor {
     public boolean scrolled(int i) {
         return false;
     }
-
-    public void dispose() {
-
-    }
-
+    
     //Key presses
     public void leftPressed() {
         keys.put(Keys.LEFT, true);
@@ -209,7 +187,7 @@ public class PlayerController implements InputProcessor {
     }
 
     public void setClickedMouseCoordinates(int x, int y) {
-        lastMouseCoordinates.set(x, y, 0);
+        _lastMouseCoordinates.set(x, y, 0);
     }
 
     public void selectMouseButtonPressed(int x, int y) {

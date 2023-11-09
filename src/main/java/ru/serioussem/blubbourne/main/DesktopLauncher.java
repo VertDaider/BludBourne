@@ -12,8 +12,9 @@ public class DesktopLauncher {
 
         config.title = "BludBourne";
         config.useGL30 = false;
-        config.width = 800;
-        config.height = 600;
+        config.width = 1200;
+        config.height = 900;
+        config.samples = 3;
         Gdx.app = new LwjglApplication(new BludBourne(), config);
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
     }
