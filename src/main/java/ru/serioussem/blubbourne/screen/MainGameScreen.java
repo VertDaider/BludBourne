@@ -24,6 +24,8 @@ import ru.serioussem.blubbourne.map.MapManager;
 
 public class MainGameScreen implements Screen {
     private static final String TAG = MainGameScreen.class.getSimpleName();
+    private static final int VIEWPORT_WIDTH = 16;
+    private static final int VIEWPORT_HEIGHT = 16;
 
     private static class VIEWPORT {
         static float viewportWidth;
@@ -64,7 +66,7 @@ public class MainGameScreen implements Screen {
         setGameState(GameState.RUNNING);
 
         //_camera setup
-        setupViewport(10, 10);
+        setupViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
         //get the current size
         _camera = new OrthographicCamera();
@@ -196,7 +198,7 @@ public class MainGameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        setupViewport(10, 10);
+        setupViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         _camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
 //        _playerHUD.resize((int) VIEWPORT.physicalWidth, (int) VIEWPORT.physicalHeight);
     }

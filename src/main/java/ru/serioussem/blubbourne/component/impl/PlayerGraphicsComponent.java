@@ -1,5 +1,6 @@
 package ru.serioussem.blubbourne.component.impl;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -15,6 +16,7 @@ import ru.serioussem.blubbourne.EntityConfig.AnimationConfig;
 
 
 public class PlayerGraphicsComponent extends GraphicsComponent {
+    private static final String TAG = PlayerGraphicsComponent.class.getSimpleName();
 
     public PlayerGraphicsComponent() {
     }
@@ -37,7 +39,7 @@ public class PlayerGraphicsComponent extends GraphicsComponent {
 
     @Override
     public void receiveMessage(String message) {
-        //Gdx.app.debug(TAG, "Got message " + message);
+//        Gdx.app.debug(TAG, "Got message " + message);
         String[] string = message.split(MESSAGE_TOKEN);
 
         if (string.length == 0) return;

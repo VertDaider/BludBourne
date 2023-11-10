@@ -2,7 +2,7 @@ package ru.serioussem.blubbourne.component;
 
 public interface Component {
 
-    public static final String MESSAGE_TOKEN = ":";
+    public static final String MESSAGE_TOKEN = ":::::";
 
     public static enum MESSAGE {
         CURRENT_POSITION,
