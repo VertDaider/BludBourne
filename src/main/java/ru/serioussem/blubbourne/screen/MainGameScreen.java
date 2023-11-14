@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Json;
 import ru.serioussem.blubbourne.BludBourne;
 import ru.serioussem.blubbourne.Entity;
 import ru.serioussem.blubbourne.EntityFactory;
+import ru.serioussem.blubbourne.UI.PlayerHUD;
 import ru.serioussem.blubbourne.component.Component;
 import ru.serioussem.blubbourne.map.Map;
 import ru.serioussem.blubbourne.map.MapManager;
@@ -56,7 +57,7 @@ public class MainGameScreen implements Screen {
     private InputMultiplexer _multiplexer;
 
     private Entity _player;
-//    private PlayerHUD _playerHUD;
+    private PlayerHUD _playerHUD;
 
     public MainGameScreen(BludBourne game){
         _game = game;
@@ -79,10 +80,10 @@ public class MainGameScreen implements Screen {
         _hudCamera = new OrthographicCamera();
         _hudCamera.setToOrtho(false, VIEWPORT.physicalWidth, VIEWPORT.physicalHeight);
 
-//        _playerHUD = new PlayerHUD(_hudCamera, _player, _mapMgr);
+        _playerHUD = new PlayerHUD(_hudCamera, _player, _mapMgr);
 
         _multiplexer = new InputMultiplexer();
-//        _multiplexer.addProcessor(_playerHUD.getStage());
+        _multiplexer.addProcessor(_playerHUD.getStage());
         _multiplexer.addProcessor(_player.getInputProcessor());
         Gdx.input.setInputProcessor(_multiplexer);
 

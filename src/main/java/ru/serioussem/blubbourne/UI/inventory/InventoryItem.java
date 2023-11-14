@@ -1,4 +1,4 @@
-package ru.serioussem.blubbourne;
+package ru.serioussem.blubbourne.UI.inventory;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -171,37 +171,22 @@ public class InventoryItem extends Image {
     }
 
     public boolean isInventoryItemOffensiveWand(){
-        if(     (itemUseType & ItemUseType.WAND_ONEHAND.getValue() ) == ItemUseType.WAND_ONEHAND.getValue() ||
-                (itemUseType & ItemUseType.WAND_TWOHAND.getValue() ) == ItemUseType.WAND_TWOHAND.getValue()
-                ){
-            return true;
-        }else{
-            return false;
-        }
+        return (itemUseType & ItemUseType.WAND_ONEHAND.getValue()) == ItemUseType.WAND_ONEHAND.getValue() ||
+                (itemUseType & ItemUseType.WAND_TWOHAND.getValue()) == ItemUseType.WAND_TWOHAND.getValue();
     }
 
 
     public boolean isInventoryItemOffensive(){
-        if(     (itemUseType & ItemUseType.WEAPON_ONEHAND.getValue() ) == ItemUseType.WEAPON_ONEHAND.getValue() ||
-                (itemUseType & ItemUseType.WEAPON_TWOHAND.getValue() ) == ItemUseType.WEAPON_TWOHAND.getValue() ||
-                (itemUseType & ItemUseType.WAND_ONEHAND.getValue() ) == ItemUseType.WAND_ONEHAND.getValue() ||
-                (itemUseType & ItemUseType.WAND_TWOHAND.getValue() ) == ItemUseType.WAND_TWOHAND.getValue()
-                ){
-            return true;
-        }else{
-            return false;
-        }
+        return (itemUseType & ItemUseType.WEAPON_ONEHAND.getValue()) == ItemUseType.WEAPON_ONEHAND.getValue() ||
+                (itemUseType & ItemUseType.WEAPON_TWOHAND.getValue()) == ItemUseType.WEAPON_TWOHAND.getValue() ||
+                (itemUseType & ItemUseType.WAND_ONEHAND.getValue()) == ItemUseType.WAND_ONEHAND.getValue() ||
+                (itemUseType & ItemUseType.WAND_TWOHAND.getValue()) == ItemUseType.WAND_TWOHAND.getValue();
     }
 
     public boolean isInventoryItemDefensive(){
-        if(     (itemUseType & ItemUseType.ARMOR_CHEST.getValue() ) == ItemUseType.ARMOR_CHEST.getValue() ||
-                (itemUseType & ItemUseType.ARMOR_HELMET.getValue() ) == ItemUseType.ARMOR_HELMET.getValue() ||
-                (itemUseType & ItemUseType.ARMOR_FEET.getValue() ) == ItemUseType.ARMOR_FEET.getValue() ||
-                (itemUseType & ItemUseType.ARMOR_SHIELD.getValue() ) == ItemUseType.ARMOR_SHIELD.getValue()
-                ){
-            return true;
-        }else{
-            return false;
-        }
+        return (itemUseType & ItemUseType.ARMOR_CHEST.getValue()) == ItemUseType.ARMOR_CHEST.getValue() ||
+                (itemUseType & ItemUseType.ARMOR_HELMET.getValue()) == ItemUseType.ARMOR_HELMET.getValue() ||
+                (itemUseType & ItemUseType.ARMOR_FEET.getValue()) == ItemUseType.ARMOR_FEET.getValue() ||
+                (itemUseType & ItemUseType.ARMOR_SHIELD.getValue()) == ItemUseType.ARMOR_SHIELD.getValue();
     }
 }

@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array;
 
 import com.badlogic.gdx.utils.ObjectMap;
 import ru.serioussem.blubbourne.Entity.AnimationType;
-import ru.serioussem.blubbourne.InventoryItem.ItemTypeID;
+import ru.serioussem.blubbourne.UI.inventory.InventoryItem.ItemTypeID;
 
 public class EntityConfig {
     private Array<AnimationConfig> animationConfig;
