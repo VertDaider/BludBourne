@@ -21,7 +21,9 @@ import ru.serioussem.blubbourne.EntityFactory;
 import ru.serioussem.blubbourne.UI.PlayerHUD;
 import ru.serioussem.blubbourne.component.Component;
 import ru.serioussem.blubbourne.map.Map;
+import ru.serioussem.blubbourne.map.MapFactory;
 import ru.serioussem.blubbourne.map.MapManager;
+import ru.serioussem.blubbourne.profile.ProfileManager;
 
 public class MainGameScreen implements Screen {
     private static final String TAG = MainGameScreen.class.getSimpleName();
@@ -92,8 +94,8 @@ public class MainGameScreen implements Screen {
 
     @Override
     public void show() {
-//        ProfileManager.getInstance().addObserver(_mapMgr);
-//        ProfileManager.getInstance().addObserver(_playerHUD);
+        ProfileManager.getInstance().addObserver(_mapMgr);
+        ProfileManager.getInstance().addObserver(_playerHUD);
 
         setGameState(GameState.LOADING);
         Gdx.input.setInputProcessor(_multiplexer);
@@ -121,7 +123,7 @@ public class MainGameScreen implements Screen {
 
         if( _gameState == GameState.PAUSED ){
             _player.updateInput(delta);
-//            _playerHUD.render(delta);
+            _playerHUD.render(delta);
             return;
         }
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -194,26 +196,26 @@ public class MainGameScreen implements Screen {
             _mapMgr.updateCurrentMapEffects(_mapMgr, _mapRenderer.getBatch(), delta);
         }
 
-//        _playerHUD.render(delta);
+        _playerHUD.render(delta);
     }
 
     @Override
     public void resize(int width, int height) {
         setupViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
         _camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
-//        _playerHUD.resize((int) VIEWPORT.physicalWidth, (int) VIEWPORT.physicalHeight);
+        _playerHUD.resize((int) VIEWPORT.physicalWidth, (int) VIEWPORT.physicalHeight);
     }
 
     @Override
     public void pause() {
         setGameState(GameState.SAVING);
-//        _playerHUD.pause();
+        _playerHUD.pause();
     }
 
     @Override
     public void resume() {
         setGameState(GameState.LOADING);
-//        _playerHUD.resume();
+        _playerHUD.resume();
     }
 
     @Override
@@ -237,11 +239,11 @@ public class MainGameScreen implements Screen {
                 _gameState = GameState.RUNNING;
                 break;
             case LOADING:
-//                ProfileManager.getInstance().loadProfile();
+                ProfileManager.getInstance().loadProfile();
                 _gameState = GameState.RUNNING;
                 break;
             case SAVING:
-//                ProfileManager.getInstance().saveProfile();
+                ProfileManager.getInstance().saveProfile();
                 _gameState = GameState.PAUSED;
                 break;
             case PAUSED:

@@ -6,24 +6,24 @@ public class ProfileSubject {
 
     private Array<ProfileObserver> _observers;
 
-    public ProfileSubject(){
+    public ProfileSubject() {
         _observers = new Array<ProfileObserver>();
     }
 
-    public void addObserver(ProfileObserver profileObserver){
+    public void addObserver(ProfileObserver profileObserver) {
         _observers.add(profileObserver);
     }
 
-    public void removeObserver(ProfileObserver profileObserver){
+    public void removeObserver(ProfileObserver profileObserver) {
         _observers.removeValue(profileObserver, true);
     }
 
-    public void removeAllObservers(){
+    public void removeAllObservers() {
         _observers.removeAll(_observers, true);
     }
 
-    protected void notify(final ProfileManager profileManager, ProfileObserver.ProfileEvent event){
-        for(ProfileObserver observer: _observers){
+    protected void notify(final ProfileManager profileManager, ProfileObserver.ProfileEvent event) {
+        for (ProfileObserver observer : _observers) {
             observer.onNotify(profileManager, event);
         }
     }
